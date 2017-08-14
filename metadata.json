@@ -1,20 +1,22 @@
 {
-	"name": "doubledog-sigul",
-	"version": "1.0.1",
-	"author": "John Florian",
-	"license": "GPL-3.0",
-	"summary": "A module to manage Sigul servers, bridges and clients",
-	"source": "https://www.doubledog.org/git/puppet-sigul.git",
-	"operatingsystem_support": [{
-		"operatingsystem": "CentOS",
-		"operatingsystemrelease": "7.0"
-	}, {
-		"operatingsystem": "Fedora",
-		"operatingsystemrelease": ["23", "24", "25"]
-	}],
-	"dependencies": [{
-		"name": "doubledog/openssl",
-		"version_requirement": ">= 1.0.0 < 2.0.0"
-	}],
-	"data_provider": "hiera"
+  "name": "mricon-sigul",
+  "version": "2.0.0",
+  "author": "Konstantin Ryabitsev",
+  "license": "GPL-3.0",
+  "summary": "A module to manage Sigul servers, bridges and clients",
+  "source": "https://github.com/mricon/puppet-sigul",
+  "dependencies": [
+    {
+      "name": "puppetlabs-stdlib",
+      "version_requirement": ">= 4.0.0 <5.0.0"
+    }
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "7"
+      ]
+    }
+  ]
 }

@@ -1,0 +1,47 @@
+# MANAGED BY PUPPET
+
+[server]
+bridge-hostname: <%= @bridge_hostname %>
+bridge-port: <%= @bridge_port %>
+max-file-payload-size: <%= @max_file_payload_size %>
+max-memory-payload-size: <%= @max_memory_payload_size %>
+max-rpms-payload-size: <%= @max_rpms_payload_size %>
+server-cert-nickname: <%= @server_cert_nickname %>
+signing-timeout: <%= @signing_timeout %>
+<% if defined? @lenient_username_check -%>
+lenient-username-check: <%= @lenient_username_check ? 'yes' : 'no' %>
+<% end -%>
+<% if defined? @proxy_usernames -%>
+proxy-usernames: <%= @proxy_usernames.flatten.join(',') %>
+<% end -%>
+
+[database]
+database-path: <%= @database_path %>
+
+[gnupg]
+gnupg-home: <%= @gnupg_home %>
+gnupg-key-type: <%= @gnupg_key_type %>
+gnupg-key-length: <%= @gnupg_key_length %>
+<% if defined? @gnupg_subkey_type -%>
+gnupg-subkey-type: <%= @gnupg_subkey_type %>
+gnupg-subkey-length: <%= @gnupg_subkey_length %>
+<% end -%>
+gnupg-key-usage: <%= @gnupg_key_usage %>
+passphrase-length: <%= @passphrase_length %>
+
+[daemon]
+unix-user: <%= @unix_user %>
+unix-group: <%= @unix_group %>
+
+[nss]
+nss-dir: <%= @nss_dir %>
+<% if defined? @nss_password -%>
+nss-password: <%= @nss_password %>
+<% end -%>
+nss-min-tls: <%= @nss_min_tls %>
+nss-max-tls: <%= @nss_max_tls %>
+
+<% if defined? @binding_enabled -%>
+[binding]
+enabled: <%= @binding_enabled.flatten.join(',') %>
+<% end -%>

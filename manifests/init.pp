@@ -1,53 +1,27 @@
-# modules/sigul/manifests/init.pp
-#
-# == Class: sigul
-#
-# Manages resources common to all usages of Sigul be it Client, Bridge or
-# Server.
-#
-# === Parameters
-#
-# ==== Required
-#
-# ==== Optional
-#
-# [*packages*]
-#   An array of package names needed for the Sigul installation.
-#
-# === Authors
-#
-#   John Florian <jflorian@doubledog.org>
-#
-# === Copyright
-#
-# Copyright 2016-2017 John Florian
-
-
 class sigul (
-        Array[String[1], 1]     $packages,
-    ) {
+  Boolean           $manage_package   = $::sigul::params::manage_package,
+  String            $package_name     = $::sigul::params::package_name,
 
-    package { $packages:
-        ensure => installed,
-    }
+  Boolean           $manage_var_dir   = $::sigul::params::manage_var_dir,
+  Pattern['^\/']    $var_dir          = $::sigul::params::var_dir,
+  String            $var_dir_seltype  = $::sigul::params::var_dir_seltype,
 
-    # Sigul Server/Bridge log files go mute after log rotation
-    #
-    # Neither the Server nor Bridge reopen their log files after logrotate
-    # truncates.  This config change addresses logrotate to use copytruncate
-    # option.  Sigul code could be adjusted as a better alternative.
-    #
-    # Regardless, in the meantime this resolves:
-    #       https://bugzilla.redhat.com/show_bug.cgi?id=800042
-    #       https://bugzilla.redhat.com/show_bug.cgi?id=1222957
-    file { '/etc/logrotate.d/sigul':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        seluser => 'system_u',
-        selrole => 'object_r',
-        seltype => 'etc_t',
-        source  => 'puppet:///modules/sigul/sigul.logrotate',
-    }
+  Boolean           $manage_conf_dir  = $::sigul::params::manage_conf_dir,
+  Pattern['^\/']    $conf_dir         = $::sigul::params::conf_dir,
+  String            $conf_dir_seltype = $::sigul::params::conf_dir_seltype,
+
+  Boolean           $manage_user      = $::sigul::params::manage_user,
+  String            $user             = $::sigul::params::user,
+  Optional[Integer] $user_uid         = $::sigul::params::user_uid,
+
+  Boolean           $manage_group     = $::sigul::params::manage_group,
+  String            $group            = $::sigul::params::group,
+  Optional[Integer] $group_gid        = $::sigul::params::group_gid,
+
+) inherits sigul::params {
+
+  anchor { 'sigul::begin': }
+  ->class { '::sigul::install': }
+  ->anchor{ 'sigul::end': }
 
 }
