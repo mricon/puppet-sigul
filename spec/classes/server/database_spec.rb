@@ -10,7 +10,7 @@ describe 'sigul::server', :type => 'class' do
       it { should compile }
       it { should contain_class('sigul::server::database') }
       it { should contain_exec('sigul_server_create_db')
-          .with_command('/sbin/funky_create_db')
+          .with_command('/sbin/funky_create_db -c /test/sigulconf/server.conf')
           .with_creates('/test/sigulvar/funky_server.sqlite')
           .with_user('sigultestuser')
       }
