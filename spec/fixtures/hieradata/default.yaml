@@ -18,6 +18,7 @@ sigul::server::package_name: 'sigul-server-test'
 sigul::server::service_name: 'sigul_server_test'
 sigul::server::service_ensure: 'stopped'
 sigul::server::service_enable: false
+sigul::server::create_db_cmd: '/sbin/funky_create_db'
 # server.conf
 sigul::server::config::bridge_hostname: 'test.example.com'
 sigul::server::config::bridge_port: 55512
@@ -27,6 +28,7 @@ sigul::server::config::max_rpms_payload_size: 5551214
 sigul::server::config::server_cert_nickname: 'sigul-server-test-cert'
 sigul::server::config::signing_timeout: 66
 sigul::server::config::nss_password: 'testpassword'
+sigul::server::config::database_path: '/test/sigulvar/funky_server.sqlite'
 #
 # bridge
 sigul::bridge::package_name: 'sigul-bridge-test'

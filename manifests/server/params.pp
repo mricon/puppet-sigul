@@ -9,5 +9,8 @@ class sigul::server::params {
   $service_ensure = 'running'
   $service_enable = true
 
+  $create_db      = true
+  $create_db_cmd  = '/sbin/sigul_server_create_db'
+
   $config_file = "${::sigul::conf_dir}/server.conf"
 }

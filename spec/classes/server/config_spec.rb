@@ -11,8 +11,8 @@ describe 'sigul::server', :type => 'class' do
       it { should contain_class('sigul::server::config') }
       it { should contain_file('/test/sigulconf/server.conf')
           .with_ensure('present')
-          .with_owner('root')
-          .with_group('root')
+          .with_owner('sigultestuser')
+          .with_group('sigultestgroup')
           .with_mode('0600')
           .with_seltype('sigul_conf_test_t')
           .with_show_diff(false)
@@ -24,7 +24,7 @@ describe 'sigul::server', :type => 'class' do
           .with_content(/^server-cert-nickname: sigul-server-test-cert/)
           .with_content(/^signing-timeout: 66/)
           .with_content(/^nss-dir: \/test\/sigulvar\/nss/)
-          .with_content(/^database-path: \/test\/sigulvar\/server.sqlite/)
+          .with_content(/^database-path: \/test\/sigulvar\/funky_server.sqlite/)
           .with_content(/^nss-password: testpassword/)
       }
     end

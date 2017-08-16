@@ -39,8 +39,8 @@ class sigul::server::config (
 ) inherits sigul::server {
   file { $::sigul::server::config_file:
     ensure    => present,
-    owner     => 'root',
-    group     => 'root',
+    owner     => $::sigul::server::config::unix_user,
+    group     => $::sigul::server::config::unix_group,
     mode      => '0600',
     seltype   => $::sigul::conf_dir_seltype,
     content   => template('sigul/server.conf.erb'),

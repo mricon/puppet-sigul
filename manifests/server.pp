@@ -7,6 +7,9 @@ class sigul::server (
   Enum['running','stopped'] $service_ensure = $::sigul::server::params::service_ensure,
   Boolean                   $service_enable = $::sigul::server::params::service_enable,
 
+  Boolean                   $create_db      = $::sigul::server::params::create_db,
+  Pattern['^\/']            $create_db_cmd  = $::sigul::server::params::create_db_cmd,
+
   Pattern['^\/']            $config_file    = $::sigul::server::params::config_file,
 
 ) inherits sigul::server::params {
@@ -14,6 +17,7 @@ class sigul::server (
   anchor { 'sigul::server::begin': }
   ->class { '::sigul::server::install': }
   ->class { '::sigul::server::config': }
+  ->class { '::sigul::server::database': }
   ->class { '::sigul::server::service': }
   ->anchor { 'sigul::server::end': }
 }

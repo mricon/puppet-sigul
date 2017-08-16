@@ -9,7 +9,7 @@ class sigul::install inherits sigul {
     user { $::sigul::user:
       ensure     => present,
       home       => $::sigul::var_dir,
-      shell      => '/bin/bash',
+      shell      => '/sbin/nologin',
       uid        => $::sigul::user_uid,
       managehome => false,
       password   => '!!',

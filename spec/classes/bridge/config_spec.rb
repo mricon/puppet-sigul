@@ -11,8 +11,8 @@ describe 'sigul::bridge', :type => 'class' do
       it { should contain_class('sigul::bridge::config') }
       it { should contain_file('/test/sigulconf/bridge.conf')
           .with_ensure('present')
-          .with_owner('root')
-          .with_group('root')
+          .with_owner('sigultestuser')
+          .with_group('sigultestgroup')
           .with_mode('0600')
           .with_seltype('sigul_conf_test_t')
           .with_show_diff(false)

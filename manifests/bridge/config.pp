@@ -34,8 +34,8 @@ class sigul::bridge::config (
 ) inherits sigul::bridge {
   file { $::sigul::bridge::config_file:
     ensure    => present,
-    owner     => 'root',
-    group     => 'root',
+    owner     => $::sigul::bridge::config::unix_user,
+    group     => $::sigul::bridge::config::unix_group,
     mode      => '0600',
     seltype   => $::sigul::conf_dir_seltype,
     content   => template('sigul/bridge.conf.erb'),
