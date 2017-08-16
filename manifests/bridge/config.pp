@@ -31,8 +31,11 @@ class sigul::bridge::config (
   String               $nss_min_tls             = 'tls1.2',
   String               $nss_max_tls             = 'tls1.2',
 
+  # Location of the config file
+  Pattern['^\/']       $config_file             = $::sigul::bridge::config_file,
+
 ) inherits sigul::bridge {
-  file { $::sigul::bridge::config_file:
+  file { $config_file:
     ensure    => present,
     owner     => $::sigul::bridge::config::unix_user,
     group     => $::sigul::bridge::config::unix_group,

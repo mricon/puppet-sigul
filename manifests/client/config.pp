@@ -26,8 +26,11 @@ class sigul::client::config (
   # [binding] section
   Optional[Array]      $binding_enabled         = undef,
 
+  # Location of the config file
+  Pattern['^\/']       $config_file             = $::sigul::client::config_file,
+
 ) inherits sigul::client {
-  file { $::sigul::client::config_file:
+  file { $config_file:
     ensure    => present,
     owner     => $::sigul::client::client_user,
     group     => $::sigul::client::client_group,
