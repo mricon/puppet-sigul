@@ -58,8 +58,8 @@ location of the NSS directory and the password:
 # you used when setting up your nss certificate store. The value for
 # nss_password can be set to '' if there is no password on the store
 # (e.g. if it is automatically managed by certmonger).
-sigul::server::config::nss_dir: '/etc/pki/sigul'
-sigul::server::config::nss_password: 'somepass'
+sigul::nss_dir: '/etc/pki/sigul'
+sigul::nss_password: 'somepass'
 ```
 
 ### Firewall management
