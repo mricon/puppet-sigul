@@ -1,4 +1,6 @@
-class sigul::install inherits sigul {
+class sigul::install {
+  contain ::sigul
+
   if $::sigul::manage_package {
     package { $::sigul::package_name:
       ensure => present,
@@ -24,6 +26,15 @@ class sigul::install inherits sigul {
     }
   }
 
+  if $::sigul::manage_nss_dir {
+    file { $::sigul::nss_dir:
+      ensure  => directory,
+      mode    => '0700',
+      owner   => $::sigul::user,
+      group   => $::sigul::group,
+      seltype => $::sigul::nss_dir_seltype,
+    }
+  }
   if $::sigul::manage_var_dir {
     file { $::sigul::var_dir:
       ensure  => directory,
@@ -41,5 +52,12 @@ class sigul::install inherits sigul {
       group   => 'root',
       seltype => $::sigul::conf_dir_seltype,
     }
+  }
+  file { '/etc/logrotate.d/sigul':
+    ensure => present,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644',
+    source => "puppet:///modules/${module_name}/sigul.logrotate",
   }
 }

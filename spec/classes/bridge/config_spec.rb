@@ -24,7 +24,7 @@ describe 'sigul::bridge', :type => 'class' do
           .with_content(/^required-fas-group-s390: s390-signers-test/)
           .with_content(/^koji-instances: ppc64 s390/)
           .with_content(/^koji-config-s390: testkoji-s390.conf/)
-          .with_content(/^nss-dir: \/test\/sigulvar\/nss/)
+          .with_content(/^nss-dir: \/etc\/pki\/sigul/)
           .with_content(/^nss-password: testpassword/)
       }
     end

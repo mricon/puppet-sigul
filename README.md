@@ -84,6 +84,33 @@ Package name (OS-specific).
 
 Default: `sigul`
 
+#### `manage_nss_dir`
+
+Whether to manage the nssdb dir. If you're managing it using some other
+mechanism, set it to false.
+
+Default: `true`
+
+#### `nss_dir`
+
+You can override it in each submodule, but usually you want to keep it in one
+place. Note that this module departs from keeping it in /var/lib/sigul due to
+better SELinux support when keeping it in /etc/pki.
+
+Default: `/etc/pki/sigul`
+
+#### `nss_dir_seltype`
+
+Default: `cert_t`
+
+
+#### `nss_password`
+
+A convenient place to set toplevel nss password. You can override it in every
+submodule.
+
+Default: `undef`
+
 #### `manage_var_dir`
 
 Whether to create the var dir. Off by default because this is normally done
@@ -168,123 +195,61 @@ Default: `undef`
 
 ### sigul::server
 
-#### `manage_package`
+This module supports running multiple server instances, which is handy when
+connecting to multiple bridges running in different availability/security
+zones. By default, they share the same gnupg and nss databases, but they don't
+have to.
 
-Default: `true`
+You don't have to specify instances if you don't need to, the server module
+will automatically create a default location config for you, e.g.:
 
-#### `package_name`
+```yaml
+sigul::nss_password: 'testpass'
+sigul::server::config:
+  bridge_hostname: 'bridge.example.com'
+  bridge_port: 44433
+```
 
-Default: `sigul-server`
+To specify multiple instances:
 
-#### `manage_service`
+```yaml
+sigul::nss_password: 'testpass'
+sigul::server::instances:
+  devnodes:
+    bridge_hostname: 'devnodes-bridge.example.com'
+  dmznodes:
+    bridge_hostname: 'dmznodes-bridge.example.com'
+```
 
-Default: `true`
-
-#### `service_name`
-
-Default: `sigul_server`
-
-#### `service_ensure`
-
-Default: `running`
-
-#### `service_enable`
-
-Default: `true`
-
-#### `create_db`
-
-Whether to create the sigul sqlite3 db if it is not found in the specified
-location.
-
-Default: `true`
-
-#### `create_db_cmd`
-
-Default: `/sbin/sigul_server_create_db`
-
-#### `config_file`
-
-Default: `$::sigul::conf_dir/server.conf`
-
-### sigul::server::config
-
-Refer to manifests/server/config.pp to see all available configuration
+Refer to manifests/server/instance.pp to see all available configuration
 options and default values. Generally, they correspond to the config file
-variables, except with underscores instead of dashes. E.g.:
-
-bridge-hostname = $::sigul::server::config::bridge_hostname.
+variables, except with underscores instead of dashes.
 
 ### sigul::bridge
 
-#### `manage_package`
+The bridge module doesn't support multiple instances, because you wouldn't
+run more than one per individual VM instance. Here's an example hiera
+configuration (the default values should be good for most things):
 
-Default: `true`
-
-#### `package_name`
-
-Default: `sigul-bridge`
-
-#### `manage_service`
-
-Default: `true`
-
-#### `service_name`
-
-Default: `sigul_bridge`
-
-#### `service_ensure`
-
-Default: `running`
-
-#### `service_enable`
-
-Default: `true`
-
-#### `config_file`
-
-Default: `$::sigul::conf_dir/bridge.conf`
-
-### sigul::bridge::config
+```yaml
+sigul::nss_password: 'testpass'
+sigul::bridge::config:
+  client_listen_port: 44434
+  server_listen_port: 44433
+```
 
 Refer to manifests/bridge/config.pp to see all available configuration
 options and default values. Generally, they correspond to the config file
-variables, except with underscores instead of dashes. E.g.:
-
-bridge-cert-nickname = $::sigul::bridge::config::bridge_cert_nickname
+variables, except with underscores instead of dashes.
 
 ### sigul::client
 
-#### `client_user`
-
-If you're running client and bridge on the same system, you may want to run
-them as different users. This lets you override the toplevel sigul::user
-configuration.
-
-Default: `$::sigul::user`
-
-#### `client_group`
-
-Default: `$::sigul::group`
-
-#### `conf_file_seltype`
-
-In case you're storing the config file somewhere other than the global
-/etc/sigul directory, you can override the seltype here.
-
-Default: `$::sigul::conf_dir_seltype`
-
-#### `config_file`
-
-Default: `$::sigul::conf_dir/client.conf`
-
-### sigul::client::config
+Client also supports multiple instances, especially since it's mostly setting
+up config files.
 
 Refer to manifests/client/config.pp to see all available configuration
 options and default values. Generally, they correspond to the config file
-variables, except with underscores instead of dashes. E.g.:
-
-bridge-hostname = $::sigul::bridge::config::bridge_hostname
+variables, except with underscores instead of dashes.
 
 ## Limitations
 The module was written for CentOS7 but should work on other architectures

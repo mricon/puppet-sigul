@@ -26,15 +26,15 @@ class sigul::bridge::config (
   String               $unix_group              = $::sigul::group,
 
   # [nss] section
-  Pattern['^\/']       $nss_dir                 = "${::sigul::var_dir}/nss",
-  Optional[String]     $nss_password            = undef,
+  Pattern['^\/']       $nss_dir                 = $::sigul::nss_dir,
+  Optional[String]     $nss_password            = $::sigul::nss_password,
   String               $nss_min_tls             = 'tls1.2',
   String               $nss_max_tls             = 'tls1.2',
 
   # Location of the config file
   Pattern['^\/']       $config_file             = $::sigul::bridge::config_file,
 
-) inherits sigul::bridge {
+) {
   file { $config_file:
     ensure    => present,
     owner     => $::sigul::bridge::config::unix_user,

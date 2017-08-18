@@ -10,4 +10,5 @@ class sigul::bridge::params {
   $service_enable = true
 
   $config_file = "${::sigul::conf_dir}/bridge.conf"
+  $config      = {}
 }

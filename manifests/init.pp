@@ -2,6 +2,11 @@ class sigul (
   Boolean           $manage_package   = $::sigul::params::manage_package,
   String            $package_name     = $::sigul::params::package_name,
 
+  Boolean           $manage_nss_dir   = $::sigul::params::manage_nss_dir,
+  Pattern['^\/']    $nss_dir          = $::sigul::params::nss_dir,
+  String            $nss_dir_seltype  = $::sigul::params::nss_dir_seltype,
+  Optional[String]  $nss_password     = $::sigul::params::nss_password,
+
   Boolean           $manage_var_dir   = $::sigul::params::manage_var_dir,
   Pattern['^\/']    $var_dir          = $::sigul::params::var_dir,
   String            $var_dir_seltype  = $::sigul::params::var_dir_seltype,
@@ -20,8 +25,6 @@ class sigul (
 
 ) inherits sigul::params {
 
-  anchor { 'sigul::begin': }
-  ->class { '::sigul::install': }
-  ->anchor{ 'sigul::end': }
+  include ::sigul::install
 
 }

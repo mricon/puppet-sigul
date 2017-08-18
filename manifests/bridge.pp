@@ -8,12 +8,16 @@ class sigul::bridge (
   Boolean                   $service_enable = $::sigul::bridge::params::service_enable,
 
   Pattern['^\/']            $config_file    = $::sigul::bridge::params::config_file,
+  Hash                      $config         = $::sigul::bridge::params::config,
 
 ) inherits sigul::bridge::params {
+  contain ::sigul
 
   anchor { 'sigul::bridge::begin': }
   ->class { '::sigul::bridge::install': }
-  ->class { '::sigul::bridge::config': }
+  ->class { '::sigul::bridge::config':
+    * => $config,
+  }
   ->class { '::sigul::bridge::service': }
   ->anchor { 'sigul::bridge::end': }
 }

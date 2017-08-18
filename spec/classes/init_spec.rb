@@ -8,9 +8,7 @@ describe 'sigul', :type => 'class' do
       end
 
       it { should compile }
-      it { should contain_anchor('sigul::begin') }
       it { should contain_class('sigul::install') }
-      it { should contain_anchor('sigul::end') }
       it { should contain_class('sigul') }
     end
   end

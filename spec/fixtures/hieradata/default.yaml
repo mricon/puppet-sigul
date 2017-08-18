@@ -13,60 +13,73 @@ sigul::manage_group: true
 sigul::group: 'sigultestgroup'
 sigul::group_gid: 7777
 #
-# server
-sigul::server::package_name: 'sigul-server-test'
-sigul::server::service_name: 'sigul_server_test'
-sigul::server::service_ensure: 'stopped'
-sigul::server::service_enable: false
-sigul::server::create_db_cmd: '/sbin/funky_create_db'
-# server.conf
-sigul::server::config::bridge_hostname: 'test.example.com'
-sigul::server::config::bridge_port: 55512
-sigul::server::config::max_file_payload_size: 5551212
-sigul::server::config::max_memory_payload_size: 5551213
-sigul::server::config::max_rpms_payload_size: 5551214
-sigul::server::config::server_cert_nickname: 'sigul-server-test-cert'
-sigul::server::config::signing_timeout: 66
-sigul::server::config::nss_password: 'testpassword'
-sigul::server::config::database_path: '/test/sigulvar/funky_server.sqlite'
-#
 # bridge
 sigul::bridge::package_name: 'sigul-bridge-test'
 sigul::bridge::service_name: 'sigul_bridge_test'
 sigul::bridge::service_ensure: 'stopped'
 sigul::bridge::service_enable: false
 # bridge.conf
-sigul::bridge::config::bridge_cert_nickname: 'sigul-bridge-cert-test'
-sigul::bridge::config::client_listen_port: 55522
-sigul::bridge::config::server_listen_port: 55512
-sigul::bridge::config::max_rpms_payload_size: 5551212
-sigul::bridge::config::koji_config: 'testkoji.conf'
-sigul::bridge::config::koji_instances:
-  ppc64:
-    config: 'testkoji-ppc64.conf'
-    fas_group: 'ppc64-signers-test'
-  s390:
-    config: 'testkoji-s390.conf'
-    fas_group: 's390-signers-test'
-sigul::bridge::config::nss_password: 'testpassword'
+sigul::bridge::config:
+  bridge_cert_nickname: 'sigul-bridge-cert-test'
+  client_listen_port: 55522
+  server_listen_port: 55512
+  max_rpms_payload_size: 5551212
+  koji_config: 'testkoji.conf'
+  koji_instances:
+    ppc64:
+      config: 'testkoji-ppc64.conf'
+      fas_group: 'ppc64-signers-test'
+    s390:
+      config: 'testkoji-s390.conf'
+      fas_group: 's390-signers-test'
+  nss_password: 'testpassword'
+#
+# server
+sigul::server::package_name: 'sigul-server-test'
+sigul::server::service_name: 'sigul_server_test'
+sigul::server::create_db_cmd: '/sbin/funky_create_db'
+sigul::server::log_dir: '/var/testlog'
+# test several server instances
+sigul::server::instances:
+  instance1:
+    bridge_hostname: 'bridge-instance1.example.com'
+    bridge_port: 55512
+    max_file_payload_size: 5551212
+    max_memory_payload_size: 5551213
+    max_rpms_payload_size: 5551214
+    server_cert_nickname: 'sigul-server-test-cert'
+    signing_timeout: 66
+    nss_password: 'testpassword'
+    database_path: '/test/sigulvar/funky_server.sqlite'
+    create_db: true
+  instance2:
+    bridge_hostname: 'bridge-instance2.example.com'
+  instance3:
+    ensure: 'absent'
+
+#
 # client
-sigul::client::client_user: 'sigulclientusertest'
-sigul::client::client_group: 'sigulclientgrouptest'
-sigul::client::conf_file_seltype: 'sigul_conf_client_test_t'
 # client.conf
-sigul::client::config::bridge_hostname: 'test-client-bridge.example.com'
-sigul::client::config::bridge_port: 55515
-sigul::client::config::client_cert_nickname: 'sigul-client-cert-test'
-sigul::client::config::server_hostname: 'test-client-server.example.com'
-sigul::client::config::user_name: 'testnobody'
-sigul::client::config::koji_config: 'testkoji.conf'
-sigul::client::config::koji_instances:
-  ppc64:
-    config: 'testkoji-ppc64.conf'
-    fas_group: 'ppc64-signers-test'
-  s390:
-    config: 'testkoji-s390.conf'
-    fas_group: 's390-signers-test'
-
-sigul::client::config::nss_password: 'testpassword'
-
+sigul::client::instances:
+  instance1:
+    client_user: 'sigulclientusertest'
+    client_group: 'sigulclientgrouptest'
+    config_file_seltype: 'sigul_conf_client_test_t'
+    bridge_hostname: 'client-instance1.example.com'
+    bridge_port: 55515
+    client_cert_nickname: 'sigul-client-cert-test'
+    server_hostname: 'test-client-server.example.com'
+    user_name: 'testnobody'
+    koji_config: 'testkoji.conf'
+    koji_instances:
+      ppc64:
+        config: 'testkoji-ppc64.conf'
+        fas_group: 'ppc64-signers-test'
+      s390:
+        config: 'testkoji-s390.conf'
+        fas_group: 's390-signers-test'
+    nss_password: 'testpassword'
+  instance2:
+    bridge_hostname: 'client-instance2.example.com'
+  instance3:
+    ensure: 'absent'

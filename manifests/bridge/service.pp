@@ -1,4 +1,4 @@
-class sigul::bridge::service inherits sigul::bridge {
+class sigul::bridge::service {
   if $::sigul::bridge::manage_service {
     service { $::sigul::bridge::service_name:
       ensure     => $::sigul::bridge::service_ensure,

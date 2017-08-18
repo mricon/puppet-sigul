@@ -21,6 +21,12 @@ describe 'sigul', :type => 'class' do
       it { should contain_group('sigultestgroup')
           .with_gid(7777)
       }
+      it { should contain_file('/etc/pki/sigul')
+          .with_ensure('directory')
+          .with_mode('0700')
+          .with_owner('sigultestuser')
+          .with_group('sigultestgroup')
+      }
       it { should contain_file('/test/sigulvar')
           .with_ensure('directory')
           .with_mode('0700')
@@ -34,6 +40,9 @@ describe 'sigul', :type => 'class' do
           .with_owner('root')
           .with_group('root')
           .with_seltype('sigul_conf_test_t')
+      }
+      it { should contain_file('/etc/logrotate.d/sigul')
+          .with_ensure('present')
       }
     end
   end
